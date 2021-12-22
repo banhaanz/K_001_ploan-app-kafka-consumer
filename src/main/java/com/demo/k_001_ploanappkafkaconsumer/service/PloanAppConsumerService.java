@@ -39,6 +39,7 @@ public class PloanAppConsumerService {
         }
     }
 
+    //Test diff consumer group consume same topic
     @KafkaListener(topics= "${kafka.consumer.ploan-app.topic}",  groupId = "${kafka.consumer.ploan-partner.group.id}")
     public void ploanPartnerConsume(String message) throws IOException {
         try {
