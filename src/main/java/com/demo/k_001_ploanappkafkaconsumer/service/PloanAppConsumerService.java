@@ -23,7 +23,24 @@ public class PloanAppConsumerService {
     private KafkaProperties kafkaConsumerProperties;
 
     @KafkaListener(topics= "${kafka.consumer.ploan-app.topic}",  groupId = "${kafka.consumer.ploan-app.group.id}")
-    public void consume(String message) throws IOException {
+    public void ploanAppConsume(String message) throws IOException {
+        try {
+            logger.info("===== Start Consume message from topic:{} =====", kafkaConsumerProperties.getKafkaPloanAppTopic());
+            logger.info("Consume message : " + message);
+            SampleResponse sampleResponse = jsonUtils.convertJsonToObjectResponse(message, SampleResponse.class);
+            logger.info("converted data : {}", sampleResponse.toString());
+
+            //--> next action..
+
+            logger.info("===== End Consumer message =====");
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(), ex);
+            throw new NAOSServiceException("statusCodeProperties.getStatusCodeServiceFail()", "fail", ex);
+        }
+    }
+
+    @KafkaListener(topics= "${kafka.consumer.ploan-app.topic}",  groupId = "${kafka.consumer.ploan-partner.group.id}")
+    public void ploanPartnerConsume(String message) throws IOException {
         try {
             logger.info("===== Start Consume message from topic:{} =====", kafkaConsumerProperties.getKafkaPloanAppTopic());
             logger.info("Consume message : " + message);

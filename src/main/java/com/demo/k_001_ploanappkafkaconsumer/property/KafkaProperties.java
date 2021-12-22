@@ -17,4 +17,7 @@ public class KafkaProperties {
 
     @Value("${kafka.consumer.ploan-app.group.id}")
     private String kafkaPloanAppGroupId;
+
+    @Value("${kafka.consumer.ploan-partner.group.id}")
+    private String kafkaPloanPartnerGroupId;
 }

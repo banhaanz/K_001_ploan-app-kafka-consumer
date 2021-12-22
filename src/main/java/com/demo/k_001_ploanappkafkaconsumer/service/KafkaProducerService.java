@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.CompletableFuture;
 
 @Service
 public class KafkaProducerService {
@@ -21,13 +18,13 @@ public class KafkaProducerService {
     @Autowired
     private KafkaProperties kafkaProperties;
 
-    public void sendKafkaPloanAppTopic(String data) {
-        sendKafkaTopic(data, kafkaProperties.getKafkaPloanAppTopic());
+    public void sendKafkaPloanAppTopic(String jsonPayload) {
+        sendKafkaTopic(kafkaProperties.getKafkaPloanAppTopic(),jsonPayload);
     }
 
-    public void sendKafkaTopic(String jsonPayload, String topic) {
+    public void sendKafkaTopic(String topic, String jsonPayload) {
         try {
-            kafkaTemplate.send(topic, jsonPayload).completable();
+            kafkaTemplate.send(topic,0,"key1", jsonPayload).completable();
             logger.info("SEND message finished to topic : {} , payload : {}", topic, jsonPayload);
         } catch (NAOSServiceException ex) {
             logger.error("kafka can't produce message , error : {}",ex.getMessage());
